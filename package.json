@@ -2,7 +2,7 @@
   "name": "trader",
   "displayName": "潜心学习",
   "description": "一个简洁的学习工具，帮助你在编码时也能关注市场动态（仅供学习使用）",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "publisher": "traderV1",
   "license": "MIT",
   "repository": {
@@ -22,7 +22,12 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onView:traderMainIndex",
+    "onView:traderSectors", 
+    "onView:traderStockList",
+    "onView:traderUSTech"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -68,26 +73,26 @@
         }
       ]
     },
-      "views": {
-        "trader-container": [
-          {
-            "id": "traderMainIndex",
-            "name": "国内指数"
-          },
-          {
-            "id": "traderSectors",
-            "name": "热门板块"
-          },
-          {
-            "id": "traderStockList",
-            "name": "我的关注"
-          },
-          {
-            "id": "traderUSTech",
-            "name": "美股市场"
-          }
-        ]
-      },
+    "views": {
+      "trader-container": [
+        {
+          "id": "traderMainIndex",
+          "name": "国内指数"
+        },
+        {
+          "id": "traderSectors",
+          "name": "热门板块"
+        },
+        {
+          "id": "traderStockList",
+          "name": "我的关注"
+        },
+        {
+          "id": "traderUSTech",
+          "name": "美股市场"
+        }
+      ]
+    },
     "menus": {
       "view/title": [
         {
@@ -131,17 +136,21 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run esbuild-base -- --minify",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+    "compile": "npm run esbuild-base",
+    "watch": "npm run esbuild-base -- --sourcemap --watch",
     "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts"
+    "lint": "eslint src --ext ts",
+    "package": "vsce package --no-dependencies"
   },
   "devDependencies": {
     "@types/node": "^20.19.37",
     "@types/vscode": "^1.85.0",
     "@typescript-eslint/eslint-plugin": "^6.13.0",
     "@typescript-eslint/parser": "^6.13.0",
+    "@vscode/vsce": "^3.7.1",
+    "esbuild": "^0.27.4",
     "eslint": "^8.54.0",
     "typescript": "^5.3.2"
   },
