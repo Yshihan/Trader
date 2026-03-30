@@ -1,0 +1,152 @@
+{
+  "name": "trader",
+  "displayName": "潜心学习",
+  "description": "一个简洁的学习工具，帮助你在编码时也能关注市场动态（仅供学习使用）",
+  "version": "1.0.0",
+  "publisher": "traderV1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/trader"
+  },
+  "keywords": [
+    "stock",
+    "trading",
+    "finance",
+    "monitor",
+    "学习工具"
+  ],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "trader.addStock",
+        "title": "添加关注",
+        "icon": "$(add)"
+      },
+      {
+        "command": "trader.removeStock",
+        "title": "取消关注"
+      },
+      {
+        "command": "trader.refresh",
+        "title": "刷新数据",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "trader.clearAll",
+        "title": "清空所有关注",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "trader.pinStock",
+        "title": "置顶"
+      },
+      {
+        "command": "trader.unpinStock",
+        "title": "取消置顶"
+      },
+      {
+        "command": "trader.sortStocks",
+        "title": "排序",
+        "icon": "$(list-ordered)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "trader-container",
+          "title": "潜心学习",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+      "views": {
+        "trader-container": [
+          {
+            "id": "traderMainIndex",
+            "name": "国内指数"
+          },
+          {
+            "id": "traderSectors",
+            "name": "热门板块"
+          },
+          {
+            "id": "traderStockList",
+            "name": "我的关注"
+          },
+          {
+            "id": "traderUSTech",
+            "name": "美股市场"
+          }
+        ]
+      },
+    "menus": {
+      "view/title": [
+        {
+          "command": "trader.refresh",
+          "when": "view == traderSectors || view == traderMainIndex || view == traderUSTech || view == traderStockList",
+          "group": "navigation@1"
+        },
+        {
+          "command": "trader.addStock",
+          "when": "view == traderStockList",
+          "group": "navigation@2"
+        },
+        {
+          "command": "trader.sortStocks",
+          "when": "view == traderStockList",
+          "group": "navigation@3"
+        },
+        {
+          "command": "trader.clearAll",
+          "when": "view == traderStockList",
+          "group": "navigation@4"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "trader.removeStock",
+          "when": "view == traderStockList && (viewItem == stock || viewItem == pinnedStock)",
+          "group": "inline"
+        },
+        {
+          "command": "trader.pinStock",
+          "when": "view == traderStockList && viewItem == stock",
+          "group": "inline"
+        },
+        {
+          "command": "trader.unpinStock",
+          "when": "view == traderStockList && viewItem == pinnedStock",
+          "group": "inline"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.37",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^8.54.0",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "iconv-lite": "^0.7.2"
+  }
+}
